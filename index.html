@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Parteiakte NSDAP – Chronik 1933</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Georgia', serif;
+  background: #c8a96e;
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 28px,
+      rgba(0,0,0,0.04) 28px,
+      rgba(0,0,0,0.04) 29px
+    );
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.akte-page {
+  max-width: 820px;
+  margin: 0 auto;
+  background: #f5e6c8;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+  border: 3px solid #8b6340;
+  border-radius: 4px;
+  box-shadow: 6px 6px 24px rgba(0,0,0,0.35), inset 0 0 60px rgba(180,130,70,0.15);
+  padding: 32px 36px 40px;
+}
+
+/* ── HEADER STREIFEN ── */
+.akte-header {
+  background: #6b3a1f;
+  margin: -32px -36px 28px;
+  padding: 18px 36px 14px;
+  border-bottom: 4px solid #8b4c1f;
+  position: relative;
+}
+.akte-header::after {
+  content: "";
+  position: absolute;
+  bottom: -8px; left: 0; right: 0;
+  height: 4px;
+  background: #c8a050;
+}
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+.header-text { flex: 1; }
+.akte-nr {
+  font-size: 13px;
+  letter-spacing: 2px;
+  color: #c8a050;
+  margin-bottom: 6px;
+  font-family: 'Courier New', monospace;
+}
+.akte-title {
+  font-size: 22px;
+  font-weight: bold;
+  color: #f5e6c8;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+.akte-sub {
+  font-size: 14px;
+  color: #d4b88a;
+  font-style: italic;
+}
+.stamp {
+  border: 3px solid #cc3333;
+  color: #cc3333;
+  font-size: 13px;
+  font-weight: bold;
+  font-family: 'Courier New', monospace;
+  padding: 5px 12px;
+  transform: rotate(-10deg);
+  letter-spacing: 3px;
+  opacity: 0.9;
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+.header-meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3px 24px;
+  margin-top: 12px;
+  font-size: 13px;
+  color: #c8a878;
+  font-family: 'Courier New', monospace;
+  border-top: 1px solid #8b6030;
+  padding-top: 10px;
+}
+
+/* ── FUNKTIONÄR CARD ── */
+.funktionaer-card {
+  display: flex;
+  gap: 20px;
+  background: #ede0c4;
+  border: 2px solid #a07840;
+  border-left: 6px solid #6b3a1f;
+  padding: 18px 20px;
+  margin-bottom: 24px;
+  border-radius: 2px;
+}
+.portrait-box {
+  flex-shrink: 0;
+  width: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.portrait-box svg {
+  width: 90px;
+  height: 110px;
+  border: 2px solid #a07840;
+  background: #d4c4a0;
+}
+.portrait-label {
+  font-size: 11px;
+  color: #6b4820;
+  font-family: 'Courier New', monospace;
+  text-align: center;
+  letter-spacing: 1px;
+}
+.f-info { flex: 1; }
+.f-name {
+  font-size: 18px;
+  font-weight: bold;
+  color: #3d1f08;
+  margin-bottom: 8px;
+  border-bottom: 1px solid #b09060;
+  padding-bottom: 6px;
+}
+.f-row {
+  font-size: 14px;
+  color: #4a2e10;
+  line-height: 1.9;
+}
+.f-row span { color: #6b3a1f; font-weight: bold; }
+.f-zitat {
+  margin-top: 10px;
+  font-size: 14px;
+  font-style: italic;
+  color: #3d1f08;
+  background: #f0e4c8;
+  border-left: 3px solid #c8a050;
+  padding: 6px 10px;
+  line-height: 1.6;
+}
+
+/* ── AKTE NOTIZ ── */
+.akte-notiz {
+  background: #f0e4c4;
+  border: 1px solid #b09060;
+  border-left: 5px solid #c8a050;
+  padding: 16px 20px;
+  margin-bottom: 24px;
+  border-radius: 2px;
+}
+.notiz-label {
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: #6b3a1f;
+  font-family: 'Courier New', monospace;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+.akte-notiz p {
+  font-size: 15px;
+  color: #2d1a06;
+  line-height: 1.85;
+}
+.akte-notiz em {
+  font-style: normal;
+  font-weight: bold;
+  color: #6b3a1f;
+}
+
+/* ── AUFGABE ── */
+.aufgabe-box {
+  background: #6b3a1f;
+  border: 2px solid #c8a050;
+  padding: 14px 20px;
+  margin-bottom: 24px;
+  border-radius: 2px;
+}
+.aufgabe-label {
+  font-size: 12px;
+  letter-spacing: 3px;
+  color: #c8a050;
+  font-family: 'Courier New', monospace;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.aufgabe-box p {
+  font-size: 15px;
+  color: #f5e6c8;
+  line-height: 1.7;
+}
+.aufgabe-box strong { color: #f0c870; }
+
+/* ── DATE POOL ── */
+.section-label {
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: #6b3a1f;
+  font-family: 'Courier New', monospace;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  border-bottom: 2px solid #b09060;
+  padding-bottom: 5px;
+  font-weight: bold;
+}
+.date-pool {
+  background: #ede0c4;
+  border: 2px solid #a07840;
+  padding: 16px;
+  margin-bottom: 24px;
+  min-height: 60px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  border-radius: 2px;
+}
+.date-chip {
+  background: #6b3a1f;
+  border: 2px solid #c8a050;
+  color: #f5e6c8;
+  font-family: 'Georgia', serif;
+  font-size: 15px;
+  padding: 8px 16px;
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+  white-space: nowrap;
+  border-radius: 2px;
+  transition: background 0.15s, transform 0.1s;
+  box-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+.date-chip:hover {
+  background: #8b4c1f;
+  transform: translateY(-1px);
+  box-shadow: 3px 4px 6px rgba(0,0,0,0.25);
+}
+.date-chip.dragging { opacity: 0.35; }
+
+/* ── EVENT ROWS ── */
+.event-row {
+  background: #ede0c4;
+  border: 2px solid #b09060;
+  border-left: 6px solid #a07840;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: stretch;
+  min-height: 80px;
+  border-radius: 2px;
+  transition: border-left-color 0.2s, background 0.2s;
+}
+.event-row.drag-over {
+  border-left-color: #c8a050;
+  background: #f0e0b0;
+}
+.event-row.correct {
+  border-left-color: #2d7a2d;
+  background: #e8f5e8;
+}
+.event-row.wrong {
+  border-left-color: #8b1a1a;
+  background: #f5e8e8;
+}
+
+.date-drop-zone {
+  width: 170px;
+  min-width: 170px;
+  border-right: 2px dashed #b09060;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  position: relative;
+  text-align: center;
+}
+.drop-hint {
+  font-size: 13px;
+  color: #a07840;
+  font-style: italic;
+  font-family: 'Courier New', monospace;
+  line-height: 1.5;
+}
+.placed-date {
+  font-style: normal;
+  color: #3d1f08;
+  font-size: 15px;
+  font-weight: bold;
+  text-align: center;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  font-family: 'Georgia', serif;
+}
+.remove-btn {
+  position: absolute;
+  top: 4px; right: 5px;
+  font-size: 13px;
+  color: #a07840;
+  cursor: pointer;
+  background: none;
+  border: none;
+  font-family: 'Courier New', monospace;
+  line-height: 1;
+  padding: 2px 4px;
+}
+.remove-btn:hover { color: #6b3a1f; }
+
+.event-content {
+  flex: 1;
+  padding: 12px 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.event-idx {
+  font-size: 12px;
+  color: #a07840;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+  font-weight: bold;
+}
+.event-text {
+  font-size: 15px;
+  color: #2d1a06;
+  line-height: 1.65;
+}
+
+/* ── BUTTONS ── */
+.btn-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+.btn {
+  font-family: 'Georgia', serif;
+  font-size: 15px;
+  padding: 11px 24px;
+  border: 2px solid #a07840;
+  background: #ede0c4;
+  color: #3d1f08;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: background 0.15s;
+  box-shadow: 2px 2px 4px rgba(0,0,0,0.15);
+}
+.btn:hover { background: #e0d0a8; }
+.btn.btn-primary {
+  background: #6b3a1f;
+  border-color: #c8a050;
+  color: #f5e6c8;
+}
+.btn.btn-primary:hover { background: #8b4c1f; }
+.btn.btn-danger {
+  background: #f0e4c4;
+  border-color: #8b3a1a;
+  color: #6b1a1a;
+}
+
+/* ── RESULT ── */
+#result-box {
+  display: none;
+  background: #ede0c4;
+  border: 2px solid #a07840;
+  padding: 20px;
+  margin-bottom: 24px;
+  border-radius: 2px;
+}
+#result-box.show { display: block; }
+.result-title {
+  font-size: 14px;
+  letter-spacing: 2px;
+  font-family: 'Courier New', monospace;
+  color: #6b3a1f;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  font-weight: bold;
+  border-bottom: 1px solid #b09060;
+  padding-bottom: 8px;
+}
+.result-item {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  margin-bottom: 10px;
+  font-size: 14px;
+  padding: 10px 14px;
+  border-left: 4px solid transparent;
+  border-radius: 2px;
+  line-height: 1.7;
+}
+.result-item.correct {
+  border-left-color: #2d7a2d;
+  background: #e8f5e8;
+  color: #1a4a1a;
+}
+.result-item.wrong {
+  border-left-color: #8b1a1a;
+  background: #f5e8e8;
+  color: #4a1a1a;
+}
+.result-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+.correct-ans { font-weight: bold; color: #1a5a1a; }
+.brandt-note {
+  font-size: 13px;
+  font-style: italic;
+  margin-top: 4px;
+  padding-top: 4px;
+  border-top: 1px solid rgba(0,0,0,0.1);
+}
+.result-item.correct .brandt-note { color: #2d5a2d; }
+.result-item.wrong   .brandt-note { color: #6b2a2a; }
+
+.score-line {
+  font-size: 16px;
+  color: #3d1f08;
+  font-weight: bold;
+  border-top: 2px solid #b09060;
+  padding-top: 12px;
+  margin-top: 12px;
+  text-align: center;
+  font-family: 'Courier New', monospace;
+}
+
+/* ── FOOTER ── */
+.akte-footer {
+  border-top: 2px solid #b09060;
+  padding-top: 12px;
+  font-size: 12px;
+  color: #8b6340;
+  text-align: center;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 1px;
+}
+
+/* ── TOUCH GHOST ── */
+.touch-ghost {
+  position: fixed;
+  pointer-events: none;
+  z-index: 1000;
+  opacity: 0.9;
+  transform: rotate(3deg);
+  background: #6b3a1f;
+  border: 2px solid #c8a050;
+  color: #f5e6c8;
+  font-family: 'Georgia', serif;
+  font-size: 15px;
+  padding: 8px 16px;
+  box-shadow: 3px 4px 8px rgba(0,0,0,0.3);
+}
+</style>
+</head>
+<body>
+<div class="akte-page">
+
+  <!-- HEADER -->
+  <div class="akte-header">
+    <div class="header-top">
+      <div class="header-text">
+        <div class="akte-nr">▸ AKTE NR. 33-027 / GAULEITUNG BERLIN-MITTE</div>
+        <div class="akte-title">Interne Parteiakte NSDAP</div>
+        <div class="akte-sub">Chronologie der nationalen Machtkonsolidierung – Januar bis März 1933</div>
+      </div>
+      <div class="stamp">GEHEIM</div>
+    </div>
+    <div class="header-meta">
+      <div>Erstellt von: Sturmbannführer K. Brandt</div>
+      <div>Datum: 25. März 1933</div>
+      <div>Klassifizierung: Nur für Parteiführer</div>
+      <div>Verteiler: Gauleitung, Reichskanzlei</div>
+    </div>
+  </div>
+
+  <!-- FUNKTIONÄR -->
+  <div class="funktionaer-card">
+    <div class="portrait-box">
+      <!-- Fiktives Porträt: Karl-Heinrich Brandt -->
+      <svg viewBox="0 0 90 110" xmlns="http://www.w3.org/2000/svg">
+        <!-- Hintergrund -->
+        <rect width="90" height="110" fill="#c8b090"/>
+        <!-- Uniform Körper -->
+        <rect x="10" y="72" width="70" height="45" rx="4" fill="#3a3a2a"/>
+        <!-- Kragen -->
+        <polygon points="35,72 45,85 55,72 52,68 45,78 38,68" fill="#2a2a1a"/>
+        <!-- Schulterklappen -->
+        <rect x="10" y="72" width="16" height="8" rx="2" fill="#5a5a3a"/>
+        <rect x="64" y="72" width="16" height="8" rx="2" fill="#5a5a3a"/>
+        <!-- Orden -->
+        <circle cx="38" cy="92" r="5" fill="#c8a050" stroke="#8b6820" stroke-width="1"/>
+        <text x="38" y="96" text-anchor="middle" font-size="7" fill="#3d1f08" font-weight="bold">✦</text>
+        <!-- Hals -->
+        <rect x="37" y="60" width="16" height="14" rx="3" fill="#d4a878"/>
+        <!-- Kopf -->
+        <ellipse cx="45" cy="44" rx="22" ry="26" fill="#d4a878"/>
+        <!-- Haare -->
+        <ellipse cx="45" cy="20" rx="22" ry="8" fill="#2a1a08"/>
+        <rect x="23" y="18" width="44" height="12" fill="#2a1a08"/>
+        <!-- Seitenscheitel -->
+        <path d="M30 20 Q45 26 60 20" fill="none" stroke="#1a0e04" stroke-width="1.5"/>
+        <!-- Ohren -->
+        <ellipse cx="23" cy="44" rx="4" ry="6" fill="#c8a060"/>
+        <ellipse cx="67" cy="44" rx="4" ry="6" fill="#c8a060"/>
+        <!-- Augen -->
+        <ellipse cx="37" cy="42" rx="5" ry="4" fill="#f0e8d8"/>
+        <ellipse cx="53" cy="42" rx="5" ry="4" fill="#f0e8d8"/>
+        <circle cx="37" cy="43" r="2.5" fill="#2a1a08"/>
+        <circle cx="53" cy="43" r="2.5" fill="#2a1a08"/>
+        <circle cx="38" cy="42" r="0.8" fill="#f0e8d8"/>
+        <circle cx="54" cy="42" r="0.8" fill="#f0e8d8"/>
+        <!-- Augenbrauen -->
+        <path d="M32 37 Q37 35 42 37" fill="none" stroke="#2a1a08" stroke-width="1.8"/>
+        <path d="M48 37 Q53 35 58 37" fill="none" stroke="#2a1a08" stroke-width="1.8"/>
+        <!-- Nase -->
+        <path d="M43 46 Q41 52 39 54 Q45 56 51 54 Q49 52 47 46" fill="#c09060" stroke="none"/>
+        <!-- Mund -->
+        <path d="M38 62 Q45 65 52 62" fill="none" stroke="#8b5a3a" stroke-width="1.5"/>
+        <!-- Mütze -->
+        <rect x="22" y="14" width="46" height="6" rx="1" fill="#2a2a1a"/>
+        <rect x="18" y="18" width="54" height="4" rx="1" fill="#3a3a2a"/>
+        <rect x="28" y="12" width="34" height="6" rx="2" fill="#2a2a1a"/>
+        <!-- Mützenabzeichen -->
+        <circle cx="45" cy="15" r="4" fill="#c8a050" stroke="#8b6820" stroke-width="0.5"/>
+        <text x="45" y="18" text-anchor="middle" font-size="5" fill="#3d1f08">✦</text>
+      </svg>
+      <div class="portrait-label">STURMBANNFÜHRER<br>K. BRANDT<br>– FIKTIV –</div>
+    </div>
+
+    <div class="f-info">
+      <div class="f-name">Karl-Heinrich Brandt, Sturmbannführer</div>
+      <div class="f-row">
+        <span>Parteinummer:</span> 84.271 &nbsp;|&nbsp;
+        <span>Eintritt:</span> 1. September 1928<br>
+        <span>Funktion:</span> Referent für politische Dokumentation, Gauleitung Berlin-Mitte<br>
+        <span>Auszeichnungen:</span> Blutorden (1929), Goldenes Parteiabzeichen
+      </div>
+      <div class="f-zitat">
+        „Der Führer hat Deutschland gerettet. Ich habe diesen Aufstieg mitgelebt und werde ihn für die Ewigkeit festhalten."
+      </div>
+    </div>
+  </div>
+
+  <!-- AKTE NOTIZ -->
+  <div class="akte-notiz">
+    <div class="notiz-label">▸ Persönlicher Bericht – Sturmbannführer Brandt, 25. März 1933</div>
+    <p>
+      Ich erstelle diese Akte als <em>historisches Dokument unseres Triumphs</em>. Was in den vergangenen acht Wochen geschah, wird die Welt für tausend Jahre verändern. Der Reichstagsbrand war das Signal – <em>die Kommunisten haben sich selbst entlarvt</em>. Unser Führer hat sofort gehandelt. Die Verordnung war notwendig und gerecht. Und nach der Abstimmung vom 23. März ist Deutschland endlich <em>frei von der Schwäche der Weimarer Lügenpolitiker</em>.<br><br>
+      Die Daten der folgenden Ereignisse wurden bei der Übertragung durcheinandergebracht. <em>Ordnet sie zu, bevor die Akte an die Reichskanzlei weitergeleitet wird.</em>
+    </p>
+  </div>
+
+  <!-- AUFGABE -->
+  <div class="aufgabe-box">
+    <div class="aufgabe-label">▸ Eure Aufgabe</div>
+    <p>Die Datumskarten wurden in der Akte vertauscht. Zieht die richtigen <strong>Datumskarten</strong> auf das jeweils passende Ereignis. Klickt danach auf „Auswertung anfordern".</p>
+  </div>
+
+  <!-- DATE POOL -->
+  <div class="section-label">▸ Datumskarten – auf das passende Ereignis ziehen</div>
+  <div class="date-pool" id="date-pool"></div>
+
+  <!-- EVENTS -->
+  <div class="section-label">▸ Ereignisse der Akte – Datum fehlt</div>
+  <div id="events-list"></div>
+
+  <!-- BUTTONS -->
+  <div class="btn-row">
+    <button class="btn btn-primary" onclick="checkAnswer()">▸ Auswertung anfordern</button>
+    <button class="btn btn-danger" onclick="resetAll()">↺ Zurücksetzen</button>
+  </div>
+
+  <!-- RESULT -->
+  <div id="result-box">
+    <div class="result-title">▸ Auswertung der Gauleitung</div>
+    <div id="result-items"></div>
+    <div class="score-line" id="score-line"></div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="akte-footer">
+    NSDAP · GAULEITUNG BERLIN-MITTE · STRENG VERTRAULICH · AKTE 33-027<br>
+    <span style="font-size:11px;">Hinweis: Fiktive Lernakte zu Unterrichtszwecken. Alle Personen sind erfunden.</span>
+  </div>
+
+</div><!-- .akte-page -->
+
+<script>
+const EVENTS = [
+  {
+    id: 1,
+    date: "30. Januar 1933",
+    text: "Hitler wird von Reichspräsident Hindenburg zum Reichskanzler ernannt. Deutschland hat eine neue Regierung – die NSDAP hält erstmals die Macht in ihren Händen.",
+    note: "Der größte Tag meines Lebens. Der Führer übernimmt die Macht – legal und unaufhaltsam."
+  },
+  {
+    id: 2,
+    date: "27./28. Februar 1933",
+    text: "Der Reichstag steht in Flammen. Der Niederländer Marinus van der Lubbe wird am Tatort verhaftet. Die NSDAP macht sofort die gesamte KPD für den Anschlag verantwortlich.",
+    note: "Endlich der Beweis. Das bolschewistische Gesindel entlarvt sich selbst vor den Augen der Welt."
+  },
+  {
+    id: 3,
+    date: "28. Februar 1933",
+    text: "Reichspräsident Hindenburg unterzeichnet die Reichstagsbrandverordnung. Grundrechte wie Meinungs-, Presse- und Versammlungsfreiheit werden außer Kraft gesetzt.",
+    note: "Notwendige Maßnahme zum Schutz des Volkes. Der Führer handelt, wo Schwächlinge versagen würden."
+  },
+  {
+    id: 4,
+    date: "5. März 1933",
+    text: "Reichstagswahl unter massivem Druck: Die NSDAP erhält 43,9 % der Stimmen. Mit dem Koalitionspartner DNVP wird eine knappe Mehrheit gesichert.",
+    note: "Das Volk hat gesprochen – trotz der feigen Lügenpresse und kommunistischer Einschüchterung."
+  },
+  {
+    id: 5,
+    date: "13. März 1933",
+    text: "Joseph Goebbels wird zum Reichsminister für Volksaufklärung und Propaganda ernannt. Ein neues Ministerium zur Kontrolle aller Medien entsteht.",
+    note: "Nun wird die Presse endlich gleichgeschaltet. Die Wahrheit des Führers wird gehört werden."
+  },
+  {
+    id: 6,
+    date: "23. März 1933",
+    text: "Der Reichstag stimmt mit 444 zu 94 Stimmen dem Ermächtigungsgesetz zu. Hitler kann fortan ohne Zustimmung des Parlaments Gesetze erlassen.",
+    note: "Der historische Tag. Deutschland ist gerettet. Die parlamentarische Demokratie war nur Schwäche."
+  }
+];
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+const placement = {};
+let draggedDate = null;
+let draggedFromEventId = null;
+let touchGhost = null;
+
+function buildUI() {
+  EVENTS.forEach(e => placement[e.id] = null);
+
+  const pool = document.getElementById('date-pool');
+  pool.innerHTML = '';
+  shuffle(EVENTS.map(e => e.date)).forEach(d => pool.appendChild(makePoolChip(d)));
+
+  const list = document.getElementById('events-list');
+  list.innerHTML = '';
+  EVENTS.forEach((ev, i) => {
+    const row = document.createElement('div');
+    row.className = 'event-row';
+    row.dataset.eid = ev.id;
+
+    const dz = document.createElement('div');
+    dz.className = 'date-drop-zone';
+    dz.dataset.eid = ev.id;
+    dz.innerHTML = '<span class="drop-hint">Datum<br>hier ablegen</span>';
+
+    dz.addEventListener('dragover', e => { e.preventDefault(); row.classList.add('drag-over'); });
+    dz.addEventListener('dragleave', () => row.classList.remove('drag-over'));
+    dz.addEventListener('drop', e => {
+      e.preventDefault();
+      row.classList.remove('drag-over');
+      if (draggedDate) handleDrop(ev.id);
+    });
+
+    const content = document.createElement('div');
+    content.className = 'event-content';
+    content.innerHTML = `<div class="event-idx">EREIGNIS ${i + 1}</div><div class="event-text">${ev.text}</div>`;
+
+    row.appendChild(dz);
+    row.appendChild(content);
+    list.appendChild(row);
+  });
+}
+
+function makePoolChip(date) {
+  const chip = document.createElement('div');
+  chip.className = 'date-chip';
+  chip.textContent = date;
+  chip.dataset.date = date;
+  chip.draggable = true;
+  chip.addEventListener('dragstart', e => {
+    draggedDate = date;
+    draggedFromEventId = null;
+    chip.classList.add('dragging');
+    e.dataTransfer.effectAllowed = 'move';
+  });
+  chip.addEventListener('dragend', () => chip.classList.remove('dragging'));
+  chip.addEventListener('touchstart', onTouchStart, { passive: true });
+  chip.addEventListener('touchmove', onTouchMove, { passive: false });
+  chip.addEventListener('touchend', onTouchEnd);
+  return chip;
+}
+
+function makePlacedChip(date, eventId) {
+  const wrap = document.createElement('div');
+  wrap.style.cssText = 'position:relative;display:flex;align-items:center;justify-content:center;width:100%;';
+
+  const chip = document.createElement('div');
+  chip.className = 'placed-date';
+  chip.textContent = date;
+  chip.dataset.date = date;
+  chip.draggable = true;
+  chip.addEventListener('dragstart', e => {
+    draggedDate = date;
+    draggedFromEventId = eventId;
+    e.dataTransfer.effectAllowed = 'move';
+  });
+  chip.addEventListener('touchstart', onTouchStart, { passive: true });
+  chip.addEventListener('touchmove', onTouchMove, { passive: false });
+  chip.addEventListener('touchend', onTouchEnd);
+
+  const btn = document.createElement('button');
+  btn.className = 'remove-btn';
+  btn.textContent = '✕';
+  btn.onclick = () => {
+    returnDateToPool(date);
+    clearDropZone(eventId);
+    placement[eventId] = null;
+    document.querySelector(`.event-row[data-eid="${eventId}"]`).classList.remove('correct','wrong');
+  };
+
+  wrap.appendChild(chip);
+  wrap.appendChild(btn);
+  return wrap;
+}
+
+function handleDrop(targetEventId) {
+  if (placement[targetEventId]) returnDateToPool(placement[targetEventId]);
+  if (draggedFromEventId !== null) {
+    placement[draggedFromEventId] = null;
+    clearDropZone(draggedFromEventId);
+    document.querySelector(`.event-row[data-eid="${draggedFromEventId}"]`)?.classList.remove('correct','wrong');
+  } else {
+    removeFromPool(draggedDate);
+  }
+  placement[targetEventId] = draggedDate;
+  const dz = document.querySelector(`.date-drop-zone[data-eid="${targetEventId}"]`);
+  dz.innerHTML = '';
+  dz.appendChild(makePlacedChip(draggedDate, targetEventId));
+  draggedDate = null;
+  draggedFromEventId = null;
+}
+
+function clearDropZone(eventId) {
+  const dz = document.querySelector(`.date-drop-zone[data-eid="${eventId}"]`);
+  if (dz) dz.innerHTML = '<span class="drop-hint">Datum<br>hier ablegen</span>';
+}
+function returnDateToPool(date) {
+  document.getElementById('date-pool').appendChild(makePoolChip(date));
+}
+function removeFromPool(date) {
+  const pool = document.getElementById('date-pool');
+  const chip = [...pool.querySelectorAll('.date-chip')].find(c => c.dataset.date === date);
+  if (chip) chip.remove();
+}
+
+// ── TOUCH ──
+function onTouchStart(e) {
+  const el = e.currentTarget;
+  draggedDate = el.dataset.date;
+  const row = el.closest('.event-row');
+  draggedFromEventId = row ? parseInt(row.dataset.eid) : null;
+  touchGhost = document.createElement('div');
+  touchGhost.className = 'touch-ghost';
+  touchGhost.textContent = draggedDate;
+  document.body.appendChild(touchGhost);
+  moveGhost(e.touches[0]);
+}
+function onTouchMove(e) {
+  e.preventDefault();
+  if (!touchGhost) return;
+  moveGhost(e.touches[0]);
+  document.querySelectorAll('.event-row').forEach(r => r.classList.remove('drag-over'));
+  const t = rowAtPoint(e.touches[0]);
+  if (t) t.classList.add('drag-over');
+}
+function onTouchEnd(e) {
+  document.querySelectorAll('.event-row').forEach(r => r.classList.remove('drag-over'));
+  if (touchGhost) { touchGhost.remove(); touchGhost = null; }
+  if (!draggedDate) return;
+  const row = rowAtPoint(e.changedTouches[0]);
+  if (row) handleDrop(parseInt(row.dataset.eid));
+  else { draggedDate = null; draggedFromEventId = null; }
+}
+function moveGhost(touch) {
+  if (!touchGhost) return;
+  touchGhost.style.left = (touch.clientX - 80) + 'px';
+  touchGhost.style.top  = (touch.clientY - 22 + window.scrollY) + 'px';
+}
+function rowAtPoint(touch) {
+  const el = document.elementFromPoint(touch.clientX, touch.clientY);
+  return el?.closest('.event-row');
+}
+
+// ── CHECK ──
+function checkAnswer() {
+  const box = document.getElementById('result-box');
+  const items = document.getElementById('result-items');
+  const scoreLine = document.getElementById('score-line');
+  items.innerHTML = '';
+  let correct = 0;
+
+  EVENTS.forEach(ev => {
+    const placed = placement[ev.id];
+    const ok = placed === ev.date;
+    if (ok) correct++;
+    const row = document.querySelector(`.event-row[data-eid="${ev.id}"]`);
+    row.classList.remove('correct','wrong');
+    row.classList.add(ok ? 'correct' : 'wrong');
+
+    const item = document.createElement('div');
+    item.className = 'result-item ' + (ok ? 'correct' : 'wrong');
+    item.innerHTML = ok
+      ? `<div class="result-icon">✔</div>
+         <div><strong>${ev.date}</strong> – ${ev.text}
+         <div class="brandt-note">Akte-Notiz Brandt: „${ev.note}"</div></div>`
+      : `<div class="result-icon">✘</div>
+         <div>Dein Datum: <em>${placed || '(kein Datum)'}</em><br>
+         <span class="correct-ans">Richtig: ${ev.date}</span> – ${ev.text}
+         <div class="brandt-note">Akte-Notiz Brandt: „${ev.note}"</div></div>`;
+    items.appendChild(item);
+  });
+
+  const pct = Math.round(correct / EVENTS.length * 100);
+  scoreLine.textContent = `Ergebnis: ${correct} von ${EVENTS.length} Daten korrekt zugeordnet (${pct} %)`;
+  box.classList.add('show');
+  box.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function resetAll() {
+  document.getElementById('result-box').classList.remove('show');
+  document.querySelectorAll('.event-row').forEach(r => r.classList.remove('correct','wrong'));
+  buildUI();
+}
+
+buildUI();
+</script>
+</body>
+</html>
